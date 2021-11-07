@@ -1,7 +1,7 @@
 
 # SharpChat
-[![stars - SharpChat](https://img.shields.io/github/stars/Explorer017/SharpChat?style=social)](https://github.com/Explorer017/SharpChat)
-[![forks - SharpChat](https://img.shields.io/github/forks/Explorer017/SharpChat?style=social)](https://github.com/Explorer017/SharpChat)
+[![Star on GitHub](https://img.shields.io/github/stars/Explorer017/SharpChat?style=social)](https://github.com/Explorer017/SharpChat)
+[![Watch on GitHub](https://img.shields.io/github/watchersExplorer017/SharpChat?style=social)](https://github.com/Explorer017/SharpChat)
 [![GitHub tag](https://img.shields.io/github/tag/Explorer017/SharpChat?include_prereleases=&sort=semver&color=blue)](https://github.com/Explorer017/SharpChat/releases/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 
