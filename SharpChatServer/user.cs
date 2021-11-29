@@ -32,16 +32,18 @@ namespace SharpChatServer
 
         public Action reciver(){
             return () => {
-                try{
-                    byte[] size = DataManipulation.AdvancedByteReciver(Stream,4);
-                    int sizeInt = BitConverter.ToInt32(size,0);
-                    byte[] data = DataManipulation.AdvancedByteReciver(Stream,sizeInt);
-                    byte[] decrypted = Decrypt(data);
-                    string message = System.Text.Encoding.UTF8.GetString(decrypted);
-                    Console.WriteLine(message);
-                }
-                catch(Exception e){
-                    Console.WriteLine(e.Message);
+                while(true){
+                    try{
+                        byte[] size = DataManipulation.AdvancedByteReciver(Stream,4);
+                        int sizeInt = BitConverter.ToInt32(size,0);
+                        byte[] data = DataManipulation.AdvancedByteReciver(Stream,sizeInt);
+                        byte[] decrypted = Decrypt(data);
+                        string message = System.Text.Encoding.UTF8.GetString(decrypted);
+                        Console.WriteLine($"{this.Name}:{message}");
+                    }
+                    catch(Exception e){
+                        Console.WriteLine(e.Message);
+                    }
                 }
             };
         }

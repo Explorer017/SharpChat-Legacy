@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace SharpChat
 {
@@ -18,8 +19,12 @@ namespace SharpChat
         Console.WriteLine("AES key sent");
         Connection go = new Connection(client, aes.Key, aes.IV, username);
         Console.WriteLine("Connection created");
-        Console.WriteLine("Press any key to exit");
-        Console.ReadKey();
+        Console.WriteLine("Begining Sender");
+        while (true)
+        {
+            string message = Console.ReadLine();
+            Task.Run(() => go.send(message));
+        }
     }
     
     
