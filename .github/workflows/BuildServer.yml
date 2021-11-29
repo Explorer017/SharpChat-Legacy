@@ -18,9 +18,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: move to Server dir
-      run:  cd SharpChatServer && ls
-    - name: Restore dependencies
-      run: dotnet restore
+      run:  cd SharpChatServer
+    #- name: Restore dependencies
+     # run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
