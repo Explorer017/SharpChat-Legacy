@@ -20,6 +20,6 @@ Running SharpChat Server:
     $ cd SharpChatClient
     $ dotnet run
 ## License
-See the [LICENSE](https://github.com/Explorer017/SharpChat/blob/master/LICENSE) file
+See the [LICENSE](https://github.com/Explorer017/SharpChat/blob/main/LICENSE) file
 
 
