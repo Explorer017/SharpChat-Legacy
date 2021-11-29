@@ -69,12 +69,16 @@ namespace SharpChat{
         }
 
         public static Aes AesSender(NetworkStream stream, byte[] rsaPubKey){
+            Console.WriteLine("Sending AES key...");
+            Console.WriteLine("Re-Importing RSA...");
             RSA rsa = RSA.Create();
             rsa.ImportRSAPublicKey(rsaPubKey,out _);
             Aes aes = Aes.Create();
             aes.KeySize = 256;
 			aes.Padding = PaddingMode.PKCS7;
+            Console.WriteLine("Generating AES key...");
             aes.GenerateKey();
+            Console.WriteLine("Encrypting AES IV...");
             aes.GenerateIV();
             byte[] aesKey = aes.Key;
 			Console.WriteLine("AES Key: " + BytesToReadable(aes.Key));
@@ -85,6 +89,11 @@ namespace SharpChat{
             stream.Write(aesKeyEncrypted,0,aesKeyEncrypted.Length);
             stream.Write(aesIVEncrypted,0,aesIVEncrypted.Length);
             return aes;
+        }
+        public static byte[] AdvancedByteReciver(Stream stream, int size){
+            byte[] sizeBytes = new byte[size];
+            stream.Read(sizeBytes,0,size);
+            return sizeBytes;
         }
 
     }

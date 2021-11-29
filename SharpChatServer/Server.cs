@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SharpChatServer
 {
@@ -13,6 +14,7 @@ namespace SharpChatServer
         // server.cs
         static void Main(string[] args)
         {
+            List<User> users = new List<User>();
             Console.WriteLine("Server starting !");
         
             // IP Address to listen on. Loopback in this case
@@ -37,12 +39,18 @@ namespace SharpChatServer
                     Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
                     // Create a thread for handling the authentication of the user.
                     User user;
-                    Thread t = new Thread(() => user = conHandle.connect(listener.AcceptTcpClient()));
-                    // Create a new thread for the client
-                    //ThreadedServer clientThread = new ThreadedServer(client);
-                    //clientThread.Start();
+                    Task.Run(() =>
+                    {
+                        user = conHandle.connect(client);
+                        users.Add(user);
+                        Console.WriteLine($"User {user.Name} joined, starting reciving thread...");
+                        user.send("CONNECTED");
+                        Task.Run(user.reciver());
+                    });
+                    
+
                 }
-                conHandle.connect(listener.AcceptTcpClient());
+                
             }
         }
         

@@ -27,16 +27,9 @@ namespace SharpChatServer{
             }
             User user = new User(client, Auth.name);
             Console.WriteLine("Reciving AES key from client...");
-            user.AES = Aes.Create();
-            user.AES.Key = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));
+            user.Key = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));
 			Console.WriteLine("Reciving AES IV from client...");
-			user.AES.IV = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));
-			int i = DataManipulation.IntReciver(client.GetStream());
-			Console.WriteLine(i);
-			byte[] test = DataManipulation.AdvancedByteReciver(client.GetStream(), i);
-			Console.WriteLine(BitConverter.ToString(test));
-			Console.WriteLine(Encoding.UTF8.GetString(LocalEncryption.Decrypt(test,user.AES.Key,user.AES.IV)));
-            
+			user.IV = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));
 			return user;
         }
 
@@ -53,11 +46,11 @@ namespace SharpChatServer{
                 //Console.WriteLine(DataManipulation.passwordHasher(rsaDecoder(request)));
                 bool auth = Database.pswdChecker(usrnam,DataManipulation.passwordHasher(rsaDecoder(request)));
                 if (auth){
-                    Server.sendMessage($"authenticated as {usrnam}", client);
+                    //Server.sendMessage($"authenticated as {usrnam}", client);
                     Console.WriteLine($"user {usrnam} has authenticated");
                     return new auth(true,usrnam);
                 } else{
-                    Server.sendMessage("authenication failed", client);
+                    // Server.sendMessage("authenication failed", client);
                     Console.WriteLine($"user {usrnam} failed authentiation");
                     return new auth(false,usrnam);
                 }
