@@ -1,6 +1,8 @@
 
 # SharpChat
 ![GitHub Repo stars](https://img.shields.io/github/stars/Explorer017/SharpChat?style=social)
+![C#](https://img.shields.io/badge/C%23-%23239120.svg?style=flat&logo=c-sharp&logoColor=white)
+![.Net](https://img.shields.io/badge/.NET-5C2D91?style=flat&logo=.net&logoColor=white)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Explorer017/SharpChat)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Explorer017/SharpChat)
