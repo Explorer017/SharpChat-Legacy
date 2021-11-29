@@ -39,7 +39,7 @@ namespace SharpChatServer
                         byte[] data = DataManipulation.AdvancedByteReciver(Stream,sizeInt);
                         byte[] decrypted = Decrypt(data);
                         string message = System.Text.Encoding.UTF8.GetString(decrypted);
-                        Console.WriteLine($"{this.Name}:{message}");
+                        Console.WriteLine($"{this.Name}: {message}");
                     }
                     catch(Exception e){
                         Console.WriteLine(e.Message);
