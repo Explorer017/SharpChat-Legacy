@@ -8,6 +8,8 @@ namespace SharpChatServer{
     class DataManipulation{
         // using UTF8 encoding for the messages
         static Encoding encoding = Encoding.UTF8;
+        //TODO: GET RID OF messageToByteArray AND REPLACE WITH SOMTHING BETTER
+        // TODO: MAKE IT NOT BREAK ON WINDOWS
         public static byte[] messageToByteArray(string message)
         {
             // get the size of original message

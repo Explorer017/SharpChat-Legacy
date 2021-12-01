@@ -43,6 +43,8 @@ namespace SharpChatServer
                     }
                     catch(Exception e){
                         Console.WriteLine(e.Message);
+                        Console.WriteLine($"User {this.Name} Disconnected");
+                        break;
                     }
                 }
             };
