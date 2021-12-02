@@ -14,7 +14,20 @@ namespace SharpChat
         {
             Console.WriteLine("SharpChat Basic Client\n--------------------\nVersion 0.1");
             // Connection creator - creates a new connection to the server and authenticates the user
-            TcpClient client = connect();
+            bool inputed = false;
+            if (!inputed){
+                try{
+                    Console.Write("What is the ip you would like to connect too: ");
+                    string IP = Console.ReadLine();
+                    Console.Write("What is the port you would like to connect too: ");
+                    int Port = Convert.ToInt32(Console.ReadLine());
+                    inputed = true;
+                } catch (Exception e){
+                    Console.WriteLine("Invalid input, please try again");
+                    inputed = false;
+                }
+            }
+            TcpClient client = connect(new TcpClient("127.0.0.1", 8081));
 
             Aes aes = DataManipulation.AesSender(client.GetStream(), rsakey);
             Connection go = new Connection(client, aes.Key, aes.IV, username);
@@ -34,13 +47,12 @@ namespace SharpChat
         }
     
     
-        public static TcpClient connect()
+        public static TcpClient connect(TcpClient client)
         {
         byte[] response;
         //try
         //{
             Console.WriteLine("Atempting to connect...");
-            TcpClient client = new TcpClient("127.0.0.1", 8081);
             client.NoDelay = false;
             Console.WriteLine("Preparing to recive key");
             NetworkStream stream = client.GetStream();
