@@ -44,8 +44,7 @@ namespace SharpChatServer{
                 {
                     if (Equals((string)reader["PSWDHASH"],passwordHash)){
                         result = true;
-                    
-                   }
+                    }
                 }
             }
             con.Close();

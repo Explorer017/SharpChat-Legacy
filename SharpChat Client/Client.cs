@@ -25,7 +25,7 @@ namespace SharpChat
                 if (Console.KeyAvailable){
                     if (Console.ReadKey().Key == ConsoleKey.Enter)
                     {
-                        Console.Write(">>> ");
+                        Console.Write("ME >>> ");
                         string message = Console.ReadLine();
                         Task.Run(() => go.send(message));
                     }

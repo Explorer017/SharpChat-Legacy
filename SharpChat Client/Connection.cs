@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace SharpChat{
     class Connection{
@@ -31,7 +32,7 @@ namespace SharpChat{
         public bool send(string message){
             try{
                 Stream connection = client.GetStream();
-                byte[] encrypted = Encrypt(DataManipulation.messageToByteArray(message));
+                byte[] encrypted = Encrypt(Encoding.UTF8.GetBytes(message));
                 byte[] length = BitConverter.GetBytes(encrypted.Length);
                 connection.Write(length, 0, length.Length);
                 connection.Write(encrypted, 0, encrypted.Length);
@@ -44,21 +45,6 @@ namespace SharpChat{
 
         //TODO: Write Comments
 
-        public Action Sender(){
-            return () => {
-                Console.WriteLine("Sender started");
-                while(true){
-                    if (Console.KeyAvailable){
-                        if (Console.ReadKey().Key == ConsoleKey.Enter)
-                        {
-                            Console.WriteLine("Type your message");
-                            string message = Console.ReadLine();
-                            Task.Run(() => this.send(message));
-                        }
-                    }
-                }
-            };
-        }
 
         public Action Receiver(){
             return () => {
