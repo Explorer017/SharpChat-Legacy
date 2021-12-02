@@ -40,10 +40,12 @@ namespace SharpChatServer
                         byte[] decrypted = Decrypt(data);
                         string message = System.Text.Encoding.UTF8.GetString(decrypted);
                         Console.WriteLine($"{this.Name}: {message}");
+                        Server.forwardToOtherClients(Server.users, this, message);
                     }
                     catch(Exception e){
                         Console.WriteLine(e.Message);
-                        Console.WriteLine($"User {this.Name} Disconnected");
+                        Console.WriteLine($"User {this.Name} Disconnected. Removing them from the users list...");
+                        Server.users.Remove(this);
                         break;
                     }
                 }

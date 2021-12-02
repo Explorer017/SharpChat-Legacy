@@ -7,29 +7,37 @@ namespace SharpChat
 {
     class Client
     {
-    public static string username;
-    public static TcpClient connection;
-    public static byte[] rsakey;
-    static void Main(string[] args)
-    {
-        Console.WriteLine("SharpChat Basic Client\n--------------------\nVersion 0.1");
-        // Connection creator - creates a new connection to the server and authenticates the user
-        TcpClient client = connect();
-        Aes aes = DataManipulation.AesSender(client.GetStream(), rsakey);
-        Console.WriteLine("AES key sent");
-        Connection go = new Connection(client, aes.Key, aes.IV, username);
-        Console.WriteLine("Connection created");
-        Console.WriteLine("Begining Sender");
-        while (true)
+        public static string username;
+        public static TcpClient connection;
+        public static byte[] rsakey;
+        static void Main(string[] args)
         {
-            string message = Console.ReadLine();
-            Task.Run(() => go.send(message));
+            Console.WriteLine("SharpChat Basic Client\n--------------------\nVersion 0.1");
+            // Connection creator - creates a new connection to the server and authenticates the user
+            TcpClient client = connect();
+            Aes aes = DataManipulation.AesSender(client.GetStream(), rsakey);
+            Console.WriteLine("AES key sent");
+            Connection go = new Connection(client, aes.Key, aes.IV, username);
+            Console.WriteLine("Connection created");
+            Console.WriteLine("Begining Sender");
+            Console.WriteLine("Press enter to send a message");
+            Task reciever = new Task(new Action(go.Receiver()));
+            reciever.Start();
+            while (true){
+                if (Console.KeyAvailable){
+                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    {
+                        Console.WriteLine("Type your message");
+                        string message = Console.ReadLine();
+                        Task.Run(() => go.send(message));
+                    }
+                }
+            }
         }
-    }
     
     
-    public static TcpClient connect()
-    {
+        public static TcpClient connect()
+        {
         byte[] response;
         //try
         //{
@@ -65,8 +73,10 @@ namespace SharpChat
             // TODO: Write code for when auth fails
             //Console.WriteLine(DataManipulation.streamToMessage(stream));
             return client;
-        //}
-        //catch (Exception e) { Console.WriteLine(e.Message); }
+            //}
+            //catch (Exception e) { Console.WriteLine(e.Message); }
         }
+        
+
     }
 }

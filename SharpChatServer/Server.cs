@@ -12,9 +12,9 @@ namespace SharpChatServer
     class Server
     {
         // server.cs
+        public static List<User> users = new List<User>();
         static void Main(string[] args)
         {
-            List<User> users = new List<User>();
             Console.WriteLine("Server starting !");
         
             // IP Address to listen on. Loopback in this case
@@ -26,7 +26,6 @@ namespace SharpChatServer
             // Create and start a TCP listener
             TcpListener listener = new TcpListener(ep);
             listener.Start();
-        
             Console.WriteLine("Server listening on: {0}:{1}", ep.Address, ep.Port);
             //Database.initDatabase();
             // keep running
@@ -44,7 +43,9 @@ namespace SharpChatServer
                         user = conHandle.connect(client);
                         users.Add(user);
                         Console.WriteLine($"User {user.Name} joined, starting reciving thread...");
-                        user.send("CONNECTED");
+                        user.send("Server");
+                        user.send($"Welcome to SharpChat, {user.Name}");
+                        forwardToOtherClientsFromServer(users, $"{user.Name} has joined the chat.");
                         Task.Run(user.reciver());
                     });
                     
@@ -54,19 +55,40 @@ namespace SharpChatServer
             }
         }
         
-        public static void sendMessage(string message, TcpClient client)
-        {
-            // messageToByteArray- discussed later
-            byte[] bytes = DataManipulation.messageToByteArray(message);
-            client.GetStream().Write(bytes, 0, bytes.Length);
-        }
+
         public static void sendBytes(byte[] bytes, TcpClient client){
             client.GetStream().Write(bytes,0,bytes.Length);
         }
         
-        public static string MessageHandler(string id)
-        {
-            return "";
+        public static bool forwardToOtherClients(List<User> users, User user, string message){
+            try {
+            foreach(User u in users){
+                if(u != user){
+                    u.send(user.Name);
+                    u.send(message);
+                }
+            }
+            return true;
+            }
+            catch(Exception e){
+                Console.WriteLine($"An error while forwarding messages: {e.Message}");
+                return false;
+            }
         }
+
+        public static bool forwardToOtherClientsFromServer(List<User> users, string message){
+            try {
+            foreach(User u in users){
+                u.send("Server");
+                u.send(message);
+            }
+            return true;
+            }
+            catch(Exception e){
+                Console.WriteLine($"An error while forwarding messages: {e.Message}");
+                return false;
+            }
+        }
+
     }
 }

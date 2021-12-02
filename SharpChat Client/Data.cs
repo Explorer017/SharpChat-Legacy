@@ -47,6 +47,16 @@ namespace SharpChat{
             return result;
         }
 
+        public static string byteToMessage(byte[] message)
+        {
+            // convert message byte array to the message string using the encoding
+            string messageString = encoding.GetString(message);
+            string result = null;
+            foreach (var c in messageString)
+                if (c != '\0')
+                    result += c;
+            return result;
+        }
         public static byte[] keyReciver(Stream stream){
             byte[] sizeBytes = new byte[270];
             stream.Read(sizeBytes,0,270);

@@ -2,6 +2,7 @@ using System;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SharpChat{
     class Connection{
@@ -40,18 +41,46 @@ namespace SharpChat{
                 return false;
             }
         }
+
+        //TODO: Write Comments
+
+        public Action Sender(){
+            return () => {
+                Console.WriteLine("Sender started");
+                while(true){
+                    if (Console.KeyAvailable){
+                        if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        {
+                            Console.WriteLine("Type your message");
+                            string message = Console.ReadLine();
+                            Task.Run(() => this.send(message));
+                        }
+                    }
+                }
+            };
+        }
+
+        public Action Receiver(){
+            return () => {
+                Console.WriteLine("Receiver started");
+                while(true){try{this.incomingMessageHandler(DataManipulation.byteToMessage(this.receive()),DataManipulation.byteToMessage(this.receive()));}
+                    catch(Exception e){Console.WriteLine(e.Message);}
+                }};
+        }
+
         /// <summary>
         /// <para>Checks for incoming messages, decrypts them and returns them as a byte array</para>
         /// <para>Returns null if no message is available</para>
         /// </summary>
-        public byte[] receive(Stream connection){
+        public byte[] receive(){
+
             //try{
+                Stream connection = client.GetStream();
                 byte[] size = DataManipulation.AdvancedByteReciver(connection,4);
                 int sizeInt = BitConverter.ToInt32(size,0);
                 byte[] data = DataManipulation.AdvancedByteReciver(connection,sizeInt);
                 byte[] decrypted = Decrypt(data);
-                string message = System.Text.Encoding.UTF8.GetString(decrypted);
-                Console.WriteLine(message);
+                //string message = System.Text.Encoding.UTF8.GetString(decrypted);
                 return decrypted;
             //} catch (Exception e){
             //    Console.WriteLine(e.Message);
@@ -69,6 +98,10 @@ namespace SharpChat{
         }
         public Stream streamGenerator(){
             return client.GetStream();
+        }
+
+        public void incomingMessageHandler(string username, string message){
+            Console.WriteLine($"{username}: {message}");
         }
     }
 }
