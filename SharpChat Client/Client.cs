@@ -15,11 +15,9 @@ namespace SharpChat
             Console.WriteLine("SharpChat Basic Client\n--------------------\nVersion 0.1");
             // Connection creator - creates a new connection to the server and authenticates the user
             TcpClient client = connect();
+
             Aes aes = DataManipulation.AesSender(client.GetStream(), rsakey);
-            Console.WriteLine("AES key sent");
             Connection go = new Connection(client, aes.Key, aes.IV, username);
-            Console.WriteLine("Connection created");
-            Console.WriteLine("Begining Sender");
             Console.WriteLine("Press enter to send a message");
             Task reciever = new Task(new Action(go.Receiver()));
             reciever.Start();
@@ -27,7 +25,7 @@ namespace SharpChat
                 if (Console.KeyAvailable){
                     if (Console.ReadKey().Key == ConsoleKey.Enter)
                     {
-                        Console.WriteLine("Type your message");
+                        Console.Write(">>> ");
                         string message = Console.ReadLine();
                         Task.Run(() => go.send(message));
                     }

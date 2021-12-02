@@ -70,7 +70,7 @@ namespace SharpChat{
 
         public static byte[] passwordEncrypter(byte[] pubKey, string Password){
             using(var rsa = RSA.Create()){
-                Console.WriteLine("Encrypting...");
+                Console.WriteLine("Encrypting Password...");
                 rsa.ImportRSAPublicKey(pubKey,out _);
                 
                 //Console.WriteLine(BitConverter.ToString(rsa.Encrypt(messageToByteArray(Password),RSAEncryptionPadding.Pkcs1)));
@@ -79,20 +79,14 @@ namespace SharpChat{
         }
 
         public static Aes AesSender(NetworkStream stream, byte[] rsaPubKey){
-            Console.WriteLine("Sending AES key...");
-            Console.WriteLine("Re-Importing RSA...");
             RSA rsa = RSA.Create();
             rsa.ImportRSAPublicKey(rsaPubKey,out _);
             Aes aes = Aes.Create();
             aes.KeySize = 256;
 			aes.Padding = PaddingMode.PKCS7;
-            Console.WriteLine("Generating AES key...");
             aes.GenerateKey();
-            Console.WriteLine("Encrypting AES IV...");
             aes.GenerateIV();
             byte[] aesKey = aes.Key;
-			Console.WriteLine("AES Key: " + BytesToReadable(aes.Key));
-			Console.WriteLine("AES IV: " + BytesToReadable(aes.IV));
             byte[] aesIV = aes.IV;
             byte[] aesKeyEncrypted = rsa.Encrypt(aesKey, RSAEncryptionPadding.Pkcs1);
             byte[] aesIVEncrypted = rsa.Encrypt(aesIV, RSAEncryptionPadding.Pkcs1);
