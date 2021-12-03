@@ -56,10 +56,8 @@ namespace SharpChat
         //{
             Console.WriteLine("Atempting to connect...");
             client.NoDelay = false;
-            Console.WriteLine("Preparing to recive key");
             NetworkStream stream = client.GetStream();
             rsakey = DataManipulation.keyReciver(stream);
-            Console.WriteLine("Key recived");
             Console.WriteLine("Would you like to log in, or register?[l/r]");
             string choice = Console.ReadLine().ToLower();
             if (choice == "r")
@@ -81,7 +79,6 @@ namespace SharpChat
             Console.WriteLine("What is the password?");
             byte[] pswd = DataManipulation.passwordEncrypter(rsakey,(Console.ReadLine()));
             stream.Write(pswd,0,pswd.Length);
-            //Console.WriteLine(stream);
             // TODO: Write code for when auth fails
             //Console.WriteLine(DataManipulation.streamToMessage(stream));
             return client;
