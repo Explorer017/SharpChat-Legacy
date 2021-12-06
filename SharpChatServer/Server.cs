@@ -18,7 +18,8 @@ namespace SharpChatServer
             Console.WriteLine("Server starting !");
         
             // IP Address to listen on. Loopback in this case
-            IPAddress ipAddr = IPAddress.Loopback;
+            Console.WriteLine("IP Address to listen on: ");
+            IPAddress ipAddr = IPAddress.Parse(Console.ReadLine());
             // Port to listen on
             int port = 8081;
             // Create a network endpoint
