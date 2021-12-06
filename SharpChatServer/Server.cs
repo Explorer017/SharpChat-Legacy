@@ -21,7 +21,8 @@ namespace SharpChatServer
             Console.WriteLine("IP Address to listen on: ");
             IPAddress ipAddr = IPAddress.Parse(Console.ReadLine());
             // Port to listen on
-            int port = 8081;
+            Console.WriteLine("Port to listen on: ");
+            int port = int.Parse(Console.ReadLine());
             // Create a network endpoint
             IPEndPoint ep = new IPEndPoint(ipAddr, port);
             // Create and start a TCP listener
