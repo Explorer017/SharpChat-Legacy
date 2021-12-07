@@ -13,7 +13,7 @@ namespace SharpChatServer{
             // streamToMessage - discussed later
             genRSA();
             Server.sendBytes(pubKey, client);
-            Console.WriteLine("User atempting authentication - waiting for LogIn or Registration Infomation");
+            Console.WriteLine("User atempting authentication");
             string message = DataManipulation.streamToMessage(client.GetStream());
             auth Auth = new auth(false,null);
             if (message == "Reg"){
@@ -26,9 +26,8 @@ namespace SharpChatServer{
                 Console.WriteLine("User is not attempting to register or log in (this should not be here, if it is then something has gone wrong (probably on the client side))");
             }
             User user = new User(client, Auth.name);
-            Console.WriteLine("Reciving AES key from client...");
+            Console.WriteLine("Encrypting Connection...");
             user.Key = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));
-			Console.WriteLine("Reciving AES IV from client...");
 			user.IV = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));
 			return user;
         }
