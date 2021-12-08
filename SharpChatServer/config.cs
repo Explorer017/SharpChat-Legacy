@@ -44,6 +44,7 @@ namespace SharpChatServer{
             if(System.IO.File.Exists(path)){
                 return;
             }
+            Console.WriteLine("Config File not found, creating new one...");
             // create the file
             System.IO.File.Create(path).Close();
             // write the default config
