@@ -5,7 +5,6 @@ namespace SharpChatServer{
         public string ServerName { get; set; }
         public string ip { get; set; }
         public int port { get; set; }
-        public string version { get; set; }
 
         // create a function to import config from a file
         public Config(string path){
@@ -35,9 +34,6 @@ namespace SharpChatServer{
                     case ConfigKey.port:
                         port = int.Parse(split[1]);
                         break;
-                    case ConfigKey.version:
-                        version = split[1];
-                        break;
                 }
             }
         }
@@ -51,15 +47,14 @@ namespace SharpChatServer{
             // create the file
             System.IO.File.Create(path).Close();
             // write the default config
-            System.IO.File.WriteAllText(path, "ServerName=SharpChatServer\nip=127.0.0.1\nport=8081\nversion=0.0.1");
+            System.IO.File.WriteAllText(path, "ServerName=SharpChatServer\nip=127.0.0.1\nport=8081");
         }
 
     }
     public enum ConfigKey{
         ServerName,
         ip,
-        port,
-        version
+        port
     }
     
 }
