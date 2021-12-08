@@ -45,7 +45,7 @@ namespace SharpChatServer
                         users.Add(user);
                         Console.WriteLine($"User {user.Name} connected.");
                         user.send("Server");
-                        user.send($"Welcome to SharpChat, {user.Name}");
+                        user.send($"You have connected to {config.ServerName}! Welcome, {user.Name}");
                         forwardToOtherClientsFromServer(users, $"{user.Name} has joined the chat.");
                         Task.Run(user.reciver());
                     });
