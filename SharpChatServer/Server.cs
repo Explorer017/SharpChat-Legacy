@@ -16,6 +16,14 @@ namespace SharpChatServer
         static void Main(string[] args)
         {
             Config config = new Config("server.config");
+
+            // init database if not exists
+            if (!System.IO.File.Exists("database.db3"))
+            {
+                Console.WriteLine("Database not found, creating new one...");
+                Database.initDatabase();
+            }
+
             Console.WriteLine("SharpChatServer: Version 0.1");
         
             // IP Address to listen on, taken from config file
