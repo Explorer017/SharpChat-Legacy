@@ -14,6 +14,7 @@ SharpChat is a chatroom program written in C#. It is currently in development an
 Running SharpChat Server:
 
     $ cd SharpChatServer
+    $ dotnet restore
     $ dotnet run
    
    Running SharpChat Client:
