@@ -15,14 +15,13 @@ namespace SharpChatServer
         public static List<User> users = new List<User>();
         static void Main(string[] args)
         {
-            Console.WriteLine("Server starting !");
+            Config config = new Config("server.config");
+            Console.WriteLine("SharpChatServer: Version 0.1");
         
-            // IP Address to listen on. Loopback in this case
-            Console.WriteLine("IP Address to listen on: ");
-            IPAddress ipAddr = IPAddress.Parse(Console.ReadLine());
+            // IP Address to listen on, taken from config file
+            IPAddress ipAddr = IPAddress.Parse(config.ip);
             // Port to listen on
-            Console.WriteLine("Port to listen on: ");
-            int port = int.Parse(Console.ReadLine());
+            int port = config.port;
             // Create a network endpoint
             IPEndPoint ep = new IPEndPoint(ipAddr, port);
             // Create and start a TCP listener
