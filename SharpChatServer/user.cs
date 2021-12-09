@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace SharpChatServer
 {
@@ -34,6 +35,10 @@ namespace SharpChatServer
             return () => {
                 while(true){
                     try{
+                        // check if client is still connected
+                        if(!clientConnected(this.Client)){
+                            throw new Exception("Client disconnected");
+                        }
                         byte[] size = DataManipulation.AdvancedByteReciver(Stream,4);
                         int sizeInt = BitConverter.ToInt32(size,0);
                         byte[] data = DataManipulation.AdvancedByteReciver(Stream,sizeInt);
@@ -59,6 +64,15 @@ namespace SharpChatServer
             Stream.Write(encrypted,0,encrypted.Length);
         }
 
+        bool clientConnected(TcpClient client)
+        {
+            bool part1 = client.Client.Poll(1000, SelectMode.SelectRead);
+            bool part2 = (client.Available == 0);
+            if (part1 && part2)
+                return false;
+            else
+                return true;
+        }
     
     }
 
