@@ -29,7 +29,15 @@ namespace SharpChat
                     inputed = false;
                 }
             }
-            TcpClient client = connect(new TcpClient(IP, Port));
+            #nullable enable
+            TcpClient? client = connect(new TcpClient(IP, Port));
+
+            if (client == null)
+            {
+                Console.WriteLine("Failed to connect to server");
+                return;
+            }
+            #nullable disable
 
             Aes aes = DataManipulation.AesSender(client.GetStream(), rsakey);
             Connection go = new Connection(client, aes.Key, aes.IV, username);
@@ -51,9 +59,6 @@ namespace SharpChat
     
         public static TcpClient connect(TcpClient client)
         {
-        byte[] response;
-        //try
-        //{
             Console.WriteLine("Atempting to connect...");
             client.NoDelay = false;
             NetworkStream stream = client.GetStream();
@@ -79,11 +84,13 @@ namespace SharpChat
             Console.WriteLine("What is the password?");
             byte[] pswd = DataManipulation.passwordEncrypter(rsakey,(Console.ReadLine()));
             stream.Write(pswd,0,pswd.Length);
-            // TODO: Write code for when auth fails
-            //Console.WriteLine(DataManipulation.streamToMessage(stream));
+            bool response = DataManipulation.BoolReader(stream);
+            if (!response){
+                Console.WriteLine("Invalid username or password - closing connection");
+                client.Close();
+                return null;
+            }
             return client;
-            //}
-            //catch (Exception e) { Console.WriteLine(e.Message); }
         }
         
 

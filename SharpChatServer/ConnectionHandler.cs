@@ -25,6 +25,13 @@ namespace SharpChatServer{
             } else {
                 Console.WriteLine("User is not attempting to register or log in (this should not be here, if it is then something has gone wrong (probably on the client side))");
             }
+            if (!Auth.authed){
+                Console.WriteLine("User failed to authenticate, disconnecting user...");
+                Server.sendBytes(BitConverter.GetBytes(false), client);
+                client.Close();
+                return null;
+            }
+            Server.sendBytes(BitConverter.GetBytes(true), client);
             User user = new User(client, Auth.name);
             Console.WriteLine("Encrypting Connection...");
             user.Key = rsaByteDecoder(DataManipulation.byteReciver(client.GetStream()));

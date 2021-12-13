@@ -46,17 +46,22 @@ namespace SharpChatServer
                     TcpClient client = listener.AcceptTcpClient();
                     Console.WriteLine($"Client connected: {client.Client.RemoteEndPoint}");
                     // Create a thread for handling the authentication of the user.
-                    User user;
+                    #nullable enable
+                    User? user;
                     Task.Run(() =>
                     {
                         user = conHandle.connect(client);
-                        users.Add(user);
-                        Console.WriteLine($"User {user.Name} connected.");
-                        user.send("Server");
-                        user.send($"You have connected to {config.ServerName}! Welcome, {user.Name}");
-                        forwardToOtherClientsFromServer(users, $"{user.Name} has joined the chat.");
-                        Task.Run(user.reciver());
+                        if (user != null)
+                        {
+                            users.Add(user);
+                            Console.WriteLine($"User {user.Name} connected.");
+                            user.send("Server");
+                            user.send($"You have connected to {config.ServerName}! Welcome, {user.Name}");
+                            forwardToOtherClientsFromServer(users, $"{user.Name} has joined the chat.");
+                            Task.Run(user.reciver());
+                        }
                     });
+                    #nullable disable
                     
 
                 }

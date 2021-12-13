@@ -63,10 +63,6 @@ namespace SharpChat{
             //Console.WriteLine(BytesToReadable(sizeBytes));
             return sizeBytes;
         }
-        public static string BytesToReadable(byte[] bytes){
-            string hex = BitConverter.ToString(bytes,0);
-            return hex;
-        }
 
         public static byte[] passwordEncrypter(byte[] pubKey, string Password){
             using(var rsa = RSA.Create()){
@@ -98,6 +94,12 @@ namespace SharpChat{
             byte[] sizeBytes = new byte[size];
             stream.Read(sizeBytes,0,size);
             return sizeBytes;
+        }
+
+        public static bool BoolReader(Stream stream){
+            byte[] sizeBytes = new byte[1];
+            stream.Read(sizeBytes,0,1);
+            return sizeBytes[0] == 1;
         }
 
     }
