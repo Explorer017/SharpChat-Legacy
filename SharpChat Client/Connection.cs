@@ -49,9 +49,17 @@ namespace SharpChat{
         public Action Receiver(){
             return () => {
                 Console.WriteLine("Receiver started");
-                while(true){try{this.incomingMessageHandler(DataManipulation.byteToMessage(this.receive()),DataManipulation.byteToMessage(this.receive()));}
-                    catch(Exception e){Console.WriteLine(e.Message);}
-                }};
+                while(true){
+                    try{
+                        this.incomingMessageHandler(DataManipulation.byteToMessage(this.receive()),DataManipulation.byteToMessage(this.receive()));}
+                    catch(Exception e){
+                        if (e is InvalidOperationException){
+                            Console.WriteLine("Connection lost");
+                            break;
+                        }
+                    }
+                }
+            };
         }
 
         /// <summary>

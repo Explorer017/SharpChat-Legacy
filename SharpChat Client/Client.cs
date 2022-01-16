@@ -53,6 +53,15 @@ namespace SharpChat
                         Task.Run(() => go.send(message));
                     }
                 }
+                // check if the reciever is still running
+                if (!reciever.IsCompleted)
+                {
+                    continue;
+                } else
+                {
+                    Console.WriteLine("The Connection has been lost");
+                    break;
+                }
             }
         }
     
