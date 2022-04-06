@@ -1,5 +1,5 @@
 
-# SharpChat
+# SharpChat-Legacy
 ![GitHub Repo stars](https://img.shields.io/github/stars/Explorer017/SharpChat?style=social)
 ![C#](https://img.shields.io/badge/C%23-%23239120.svg?style=flat&logo=c-sharp&logoColor=white)
 ![.Net](https://img.shields.io/badge/.NET-5C2D91?style=flat&logo=.net&logoColor=white)
@@ -7,6 +7,8 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Explorer017/SharpChat)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Explorer017/SharpChat)
 ![GitHub issues](https://img.shields.io/github/issues-raw/Explorer017/SharpChat)
+
+⚠ This Version is now unmaintained! ⚠
 
 SharpChat is a chatroom program written in C#. It is currently in development and there currently isn't a working version available, although feel free to test it.
 
